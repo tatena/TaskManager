@@ -101,4 +101,13 @@ CREATE TABLE `task_manager`.`workspace_users` (
     REFERENCES `task_manager`.`roles` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
+
+alter table workspace_users
+	add id bigint null;
+
+alter table workspace_users
+	add constraint workspace_users_pk
+		primary key (id);
+
+
   
