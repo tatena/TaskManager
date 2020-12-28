@@ -31,7 +31,8 @@ public class Task {
     @JoinColumn(name = "WORKSPACE_ID", referencedColumnName = "ID")
     private Workspace workspace;
 
-    @Column(name = "DESCRIPTION")
+    @Column(name = "DESCRIPTION", columnDefinition = "LONGTEXT")
+    @Lob
     private String description;
 
     @Column(name = "STATUS_ID")
