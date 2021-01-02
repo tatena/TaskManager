@@ -11,7 +11,7 @@ import java.util.Collection;
 import java.util.List;
 
 public class CustomUserPrincipal implements UserDetails {
-    private final User user;
+    public final User user;
 
     public CustomUserPrincipal(User user) {
         this.user = user;
@@ -21,6 +21,7 @@ public class CustomUserPrincipal implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Role role = user.getRole();
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+
         authorities.add(new SimpleGrantedAuthority(role.name()));
 
         return authorities;

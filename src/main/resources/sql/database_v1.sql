@@ -119,3 +119,6 @@ CREATE TABLE `task_manager`.`workspace_users`
 ALTER TABLE `task_manager`.`workspace_users`
     ADD COLUMN `id` BIGINT NOT NULL AUTO_INCREMENT AFTER `role_id`,
     ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `task_manager`.`users`
+    CHANGE COLUMN `password` `password` VARCHAR(255) NOT NULL ;

@@ -20,6 +20,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) {
         Optional<User> userOptional = userRepository.findByUsername(username);
+
         User user = userOptional.orElseThrow(() -> new RuntimeException("User does not exist"));
 
         return new CustomUserPrincipal(user);

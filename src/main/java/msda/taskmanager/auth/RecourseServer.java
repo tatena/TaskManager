@@ -22,8 +22,8 @@ public class RecourseServer {
         public void configure(HttpSecurity http) throws Exception {
             http
                     .authorizeRequests()
-                    .antMatchers("/api/**").authenticated()
-                    .antMatchers("/").permitAll();
+                    .antMatchers("/api/**").permitAll()
+                    .antMatchers("/", "/api/auth").permitAll();
         }
     }
 }
