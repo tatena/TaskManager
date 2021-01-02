@@ -23,7 +23,8 @@ public class Workspace {
     @Column(name = "TITLE")
     private String title;
 
-    @Column(name = "DESCRIPTION")
+    @Column(name = "DESCRIPTION", columnDefinition = "TEXT")
+    @Lob
     private String description;
 
     @Column(name = "STATUS_ID")
