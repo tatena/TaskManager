@@ -12,6 +12,7 @@ public class WorkspaceMapper {
     public static WorkspaceDto toDto(Workspace workspace) {
         WorkspaceDto res = new WorkspaceDto();
 
+        res.setId(workspace.getId());
         res.setDescription(workspace.getDescription());
         res.setStatus(workspace.getStatus());
         res.setTitle(workspace.getTitle());
@@ -32,9 +33,10 @@ public class WorkspaceMapper {
     public static Workspace fromDto(WorkspaceDto workspaceDto){
         Workspace workspace = new Workspace();
 
+        workspace.setId(workspaceDto.getId());
         workspace.setTitle(workspaceDto.getTitle());
         workspace.setDescription(workspaceDto.getDescription());
-        workspace.setStatus(WorkspaceStatus.ACTIVE);
+        workspace.setStatus(workspaceDto.getStatus());
         workspace.setMemberships(new ArrayList<>());
 
         return workspace;

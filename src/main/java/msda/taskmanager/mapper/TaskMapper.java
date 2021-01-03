@@ -11,6 +11,7 @@ public class TaskMapper {
     public static TaskDto toDto(Task task) {
         TaskDto res = new TaskDto();
 
+        res.setId(task.getId());
         res.setAuthorUsername(task.getAuthor().getUsername());
         res.setReceiverUsername(task.getReceiver().getUsername());
         res.setWorkspaceName(task.getWorkspace().getTitle());

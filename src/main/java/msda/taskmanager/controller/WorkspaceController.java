@@ -28,18 +28,17 @@ public class WorkspaceController {
 
     @PutMapping
     public void addMember(MembershipRequest membershipRequest){
-
+        workspaceService.addMember(membershipRequest);
     }
 
     @DeleteMapping
     public void removeMember(MembershipRequest membershipRequest){
-
+        workspaceService.removeMember(membershipRequest);
     }
 
     @PutMapping("/roles")
-    /* TODO: may need new DTO class */
     public void updateRoles(MembershipRequest membershipRequest){
-
+        /* TODO: may need new DTO class */
     }
 
 }
