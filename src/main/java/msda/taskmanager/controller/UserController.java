@@ -19,9 +19,13 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping
-    public UserDto getUserInfo(Principal userPrincipal) {
-        CustomUserPrincipal principal = (CustomUserPrincipal) userPrincipal;
-        return userService.getUserInfo(principal.user);
+    @GetMapping("/workspaces")
+    public void getUserWorkspaces(){
+
+    }
+
+    @GetMapping("/tasks")
+    public void getUserTasks(){
+
     }
 }
