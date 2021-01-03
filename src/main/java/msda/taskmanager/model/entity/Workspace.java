@@ -27,12 +27,13 @@ public class Workspace {
     @Lob
     private String description;
 
+    @Enumerated
     @Column(name = "STATUS_ID")
     private WorkspaceStatus status;
 
 
     @OneToMany(mappedBy = "workspace", fetch = FetchType.LAZY)
-    List<Membership> users;
+    List<Membership> memberships;
 
     @OneToMany(mappedBy = "workspace", fetch = FetchType.LAZY)
     List<Task> tasks;
