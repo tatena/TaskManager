@@ -5,6 +5,7 @@ import msda.taskmanager.auth.CustomUserPrincipal;
 import msda.taskmanager.model.dto.UserDto;
 import msda.taskmanager.model.dto.WorkspaceDto;
 import msda.taskmanager.model.entity.Workspace;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,7 +27,7 @@ public class UserController {
 
     @GetMapping("/workspaces")
     public ResponseEntity<List<WorkspaceDto>> getUserWorkspaces(){
-        return userService.getUserWorkspaces();
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getUserWorkspaces());
     }
 
     @GetMapping("/tasks")

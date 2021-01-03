@@ -2,6 +2,7 @@ package msda.taskmanager.Service;
 
 
 import msda.taskmanager.auth.CustomUserPrincipal;
+import msda.taskmanager.mapper.WorkspaceMapper;
 import msda.taskmanager.model.dto.UserDto;
 import msda.taskmanager.model.dto.WorkspaceDto;
 import msda.taskmanager.model.entity.User;
@@ -32,16 +33,15 @@ public class UserService {
         return res;
     }
 
-    public Authentication getAuthentication() {
-        return SecurityContextHolder.getContext().getAuthentication();
+    public List<WorkspaceDto> getUserWorkspaces() {
+        User user = getAuthenticatedUser();
+        return WorkspaceMapper.toDtoList(user.getWorkspaces());
     }
 
-    public ResponseEntity<List<WorkspaceDto>> getUserWorkspaces() {
-
-        Authentication authentication = getAuthentication();
+    public User getAuthenticatedUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userName = (String) authentication.getPrincipal();
         User user = userRepository.findByUsername(userName).get();
-
-        return null;
+        return user;
     }
 }

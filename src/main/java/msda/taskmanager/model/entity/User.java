@@ -6,6 +6,7 @@ import lombok.Setter;
 import msda.taskmanager.model.enums.Role;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -36,11 +37,21 @@ public class User {
     private Role role;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    List<Membership> workspaces;
+    List<Membership> memberships;
 
     @OneToMany(mappedBy = "receiver", fetch = FetchType.LAZY)
     List<Task> receivedTasks;
 
     @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
     List<Task> createdTasks;
+
+    public List<Workspace> getWorkspaces() {
+        List<Workspace> res = new ArrayList<>();
+
+        for (Membership membership : memberships) {
+            res.add(membership.getWorkspace());
+        }
+
+        return res;
+    }
 }
