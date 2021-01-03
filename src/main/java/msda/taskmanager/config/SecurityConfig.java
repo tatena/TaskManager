@@ -57,6 +57,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/webjars/**",
                         "/api/auth"
                 ).permitAll()
-                .anyRequest().permitAll();
+                .anyRequest().authenticated();
     }
 }

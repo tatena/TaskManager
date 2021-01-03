@@ -22,7 +22,7 @@ public class RecourseServer {
         public void configure(HttpSecurity http) throws Exception {
             http
                     .authorizeRequests()
-                    .antMatchers("/api/**").permitAll()
+                    .antMatchers("/api/**").authenticated()
                     .antMatchers("/", "/api/auth").permitAll();
         }
     }
