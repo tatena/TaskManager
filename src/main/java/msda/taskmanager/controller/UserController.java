@@ -1,19 +1,14 @@
 package msda.taskmanager.controller;
 
 import msda.taskmanager.Service.UserService;
-import msda.taskmanager.auth.CustomUserPrincipal;
 import msda.taskmanager.model.dto.TaskDto;
-import msda.taskmanager.model.dto.UserDto;
 import msda.taskmanager.model.dto.WorkspaceDto;
-import msda.taskmanager.model.entity.Workspace;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -40,4 +35,5 @@ public class UserController {
     public ResponseEntity<List<TaskDto>> getUserCreatedTasks(){
         return ResponseEntity.status(HttpStatus.OK).body(userService.getUserCreatedTasks());
     }
+
 }

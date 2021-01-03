@@ -33,7 +33,8 @@ public class User {
     @Column(name = "LAST_NAME")
     private String lastName;
 
-    @Column(name = "ROLE_ID")
+    @Column(name = "ROLE")
+    @Enumerated(EnumType.STRING)
     private Role role;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)

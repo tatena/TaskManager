@@ -27,8 +27,8 @@ public class Workspace {
     @Lob
     private String description;
 
-    @Enumerated
-    @Column(name = "STATUS_ID")
+    @Column(name = "STATUS")
+    @Enumerated(EnumType.STRING)
     private WorkspaceStatus status;
 
 

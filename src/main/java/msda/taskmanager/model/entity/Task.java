@@ -35,7 +35,8 @@ public class Task {
     @Lob
     private String description;
 
-    @Column(name = "STATUS_ID")
+    @Column(name = "STATUS")
+    @Enumerated(EnumType.STRING)
     private TaskStatus status;
 
 }

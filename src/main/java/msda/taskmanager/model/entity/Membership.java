@@ -27,6 +27,7 @@ public class Membership {
     @JoinColumn(name = "USER_ID", referencedColumnName = "ID")
     private User user;
 
-    @Column(name = "ROLE_ID")
+    @Column(name = "ROLE")
+    @Enumerated(EnumType.STRING)
     private Role role;
 }

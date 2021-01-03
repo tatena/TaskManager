@@ -1,9 +1,9 @@
 package msda.taskmanager.controller;
 
-
 import msda.taskmanager.Service.AdminService;
 import msda.taskmanager.model.dto.UserDto;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,8 +17,9 @@ public class AdminController {
     }
 
     @PutMapping
-    public void updateUser(){
-
+    public ResponseEntity<Void> updateUser(@RequestBody UserDto userDto, @RequestParam Long userId){
+        adminService.updateUser(userDto, userId);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @PostMapping

@@ -11,7 +11,7 @@ import java.util.Collection;
 import java.util.List;
 
 public class CustomUserPrincipal implements UserDetails {
-    public final User user;
+    private final User user;
 
     public CustomUserPrincipal(User user) {
         this.user = user;
@@ -55,6 +55,10 @@ public class CustomUserPrincipal implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public User getUser() {
+        return user;
     }
 }
 
