@@ -78,6 +78,7 @@ public class SwaggerConfig {
         return Collections.singletonList(new SecurityReference("oauth2schema", authorizationScopes));
     }
 
+    @Deprecated
     @Bean
     public SecurityConfiguration securityInfo() {
         return new SecurityConfiguration(SecurityConstants.ID, SecurityConstants.SECRET,

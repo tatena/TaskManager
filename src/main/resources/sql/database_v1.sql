@@ -56,6 +56,38 @@ CREATE TABLE `task_manager`.`task_status`
     PRIMARY KEY (`id`)
 );
 
+CREATE TABLE `task_manager`.`workspace_users`
+(
+    `workspace_id` BIGINT NOT NULL,
+    `user_id`      BIGINT NOT NULL,
+    `role_id`      INT    NOT NULL,
+    INDEX `wu_workspace_id_fk_idx` (`workspace_id` ASC) VISIBLE,
+    INDEX `wu_user_id_fk_idx` (`user_id` ASC) VISIBLE,
+    INDEX `wu_role_id_fk_idx` (`role_id` ASC) VISIBLE,
+    CONSTRAINT `wu_workspace_id_fk`
+        FOREIGN KEY (`workspace_id`)
+            REFERENCES `task_manager`.`workspaces` (`id`)
+            ON DELETE NO ACTION
+            ON UPDATE NO ACTION,
+    CONSTRAINT `wu_user_id_fk`
+        FOREIGN KEY (`user_id`)
+            REFERENCES `task_manager`.`users` (`id`)
+            ON DELETE NO ACTION
+            ON UPDATE NO ACTION,
+    CONSTRAINT `wu_role_id_fk`
+        FOREIGN KEY (`role_id`)
+            REFERENCES `task_manager`.`roles` (`id`)
+            ON DELETE NO ACTION
+            ON UPDATE NO ACTION
+);
+
+ALTER TABLE `task_manager`.`workspace_users`
+    ADD COLUMN `id` BIGINT NOT NULL AUTO_INCREMENT AFTER `role_id`,
+    ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `task_manager`.`users`
+    CHANGE COLUMN `password` `password` VARCHAR(255) NOT NULL ;
+
 CREATE TABLE `task_manager`.`tasks`
 (
     `id`           BIGINT   NOT NULL AUTO_INCREMENT,
@@ -90,35 +122,3 @@ CREATE TABLE `task_manager`.`tasks`
             ON DELETE NO ACTION
             ON UPDATE NO ACTION
 );
-
-CREATE TABLE `task_manager`.`workspace_users`
-(
-    `workspace_id` BIGINT NOT NULL,
-    `user_id`      BIGINT NOT NULL,
-    `role_id`      INT    NOT NULL,
-    INDEX `wu_workspace_id_fk_idx` (`workspace_id` ASC) VISIBLE,
-    INDEX `wu_user_id_fk_idx` (`user_id` ASC) VISIBLE,
-    INDEX `wu_role_id_fk_idx` (`role_id` ASC) VISIBLE,
-    CONSTRAINT `wu_workspace_id_fk`
-        FOREIGN KEY (`workspace_id`)
-            REFERENCES `task_manager`.`workspaces` (`id`)
-            ON DELETE NO ACTION
-            ON UPDATE NO ACTION,
-    CONSTRAINT `wu_user_id_fk`
-        FOREIGN KEY (`user_id`)
-            REFERENCES `task_manager`.`users` (`id`)
-            ON DELETE NO ACTION
-            ON UPDATE NO ACTION,
-    CONSTRAINT `wu_role_id_fk`
-        FOREIGN KEY (`role_id`)
-            REFERENCES `task_manager`.`roles` (`id`)
-            ON DELETE NO ACTION
-            ON UPDATE NO ACTION
-);
-
-ALTER TABLE `task_manager`.`workspace_users`
-    ADD COLUMN `id` BIGINT NOT NULL AUTO_INCREMENT AFTER `role_id`,
-    ADD PRIMARY KEY (`id`);
-
-ALTER TABLE `task_manager`.`users`
-    CHANGE COLUMN `password` `password` VARCHAR(255) NOT NULL ;

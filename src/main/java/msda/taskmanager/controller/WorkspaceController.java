@@ -22,8 +22,8 @@ public class WorkspaceController {
     }
 
     @PostMapping
-    public void createWorkspace(WorkspaceDto workspaceDto){
-
+    public void createWorkspace(@RequestBody WorkspaceDto workspaceDto){
+        workspaceService.createWorkspace(workspaceDto);
     }
 
     @PutMapping

@@ -2,6 +2,7 @@ package msda.taskmanager.mapper;
 
 import msda.taskmanager.model.dto.WorkspaceDto;
 import msda.taskmanager.model.entity.Workspace;
+import msda.taskmanager.model.enums.WorkspaceStatus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +27,17 @@ public class WorkspaceMapper {
         }
 
         return res;
+    }
+
+    public static Workspace fromDto(WorkspaceDto workspaceDto){
+        Workspace workspace = new Workspace();
+
+        workspace.setTitle(workspaceDto.getTitle());
+        workspace.setDescription(workspaceDto.getDescription());
+        workspace.setStatus(WorkspaceStatus.ACTIVE);
+        workspace.setMemberships(new ArrayList<>());
+
+        return workspace;
     }
 
 }
