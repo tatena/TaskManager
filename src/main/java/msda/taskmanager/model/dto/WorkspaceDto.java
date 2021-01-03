@@ -5,6 +5,8 @@ import msda.taskmanager.model.enums.WorkspaceStatus;
 
 @Data
 public class WorkspaceDto {
+
+    private Long id;
     private String title;
     private String description;
     private WorkspaceStatus status;

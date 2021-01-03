@@ -6,6 +6,7 @@ import msda.taskmanager.model.enums.Role;
 @Data
 public class UserDto {
 
+    private Long id;
     private String username;
     private String password;
     private String firstName;

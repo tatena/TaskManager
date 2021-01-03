@@ -5,9 +5,10 @@ import lombok.Data;
 @Data
 public class TaskDto {
 
-    String description;
-    String authorUsername;
-    String receiverUsername;
-    String workspaceName;
+    private Long id;
+    private String description;
+    private String authorUsername;
+    private String receiverUsername;
+    private String workspaceName;
 
 }
