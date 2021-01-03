@@ -2,6 +2,7 @@ package msda.taskmanager.controller;
 
 import msda.taskmanager.Service.UserService;
 import msda.taskmanager.auth.CustomUserPrincipal;
+import msda.taskmanager.model.dto.TaskDto;
 import msda.taskmanager.model.dto.UserDto;
 import msda.taskmanager.model.dto.WorkspaceDto;
 import msda.taskmanager.model.entity.Workspace;
@@ -30,8 +31,13 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(userService.getUserWorkspaces());
     }
 
-    @GetMapping("/tasks")
-    public void getUserTasks(){
+    @GetMapping("/tasks/received")
+    public ResponseEntity<List<TaskDto>> getUserReceivedTasks(){
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getUserReceivedTasks());
+    }
 
+    @GetMapping("/tasks/created")
+    public ResponseEntity<List<TaskDto>> getUserCreatedTasks(){
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getUserCreatedTasks());
     }
 }
