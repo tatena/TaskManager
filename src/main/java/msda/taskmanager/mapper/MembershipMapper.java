@@ -11,7 +11,7 @@ public class MembershipMapper {
 
         membership.setWorkspace(workspace);
         membership.setUser(user);
-        membership.setRole(Role.ROLE_ADMIN);
+        membership.setRole(role);
 
         return membership;
     }

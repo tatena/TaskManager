@@ -2,6 +2,7 @@ package msda.taskmanager.controller;
 
 
 import msda.taskmanager.Service.TaskService;
+import msda.taskmanager.model.dto.TaskAssignment;
 import msda.taskmanager.model.dto.TaskDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -17,18 +18,18 @@ public class TaskController {
     }
 
     @PostMapping
-    public void assignTask(TaskDto taskDto){
-
+    public void assignTask(TaskAssignment taskDto){
+        taskService.assignTask(taskDto);
     }
 
     @PutMapping
     public void updateTaskStatus(TaskDto taskDto){
-
+        taskService.updateTaskStatus(taskDto);
     }
 
     @DeleteMapping
     public void cancelTask(TaskDto taskDto){
-
+        taskService.cancelTask(taskDto);
     }
 
 }

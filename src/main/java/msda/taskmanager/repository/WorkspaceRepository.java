@@ -9,5 +9,6 @@ import java.util.Optional;
 @Repository
 public interface WorkspaceRepository extends JpaRepository<Workspace, Long> {
 
-    Optional<Workspace> getById(long id);
+    Optional<Workspace> getById(Long id);
+
 }
