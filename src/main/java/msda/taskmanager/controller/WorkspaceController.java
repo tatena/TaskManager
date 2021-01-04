@@ -36,10 +36,10 @@ public class WorkspaceController {
 
     @PutMapping("/roles")
     public void updateRoles(MembershipRequest membershipRequest){
-        /* TODO: may need new DTO class */
+        workspaceService.updateRoles(membershipRequest);
     }
 
-    @DeleteMapping("workspace")
+    @DeleteMapping("/delete")
     public void deleteWorkspace(@RequestParam Long workspaceID){
         // TODO: check permission, then delete
     }

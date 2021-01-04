@@ -35,14 +35,12 @@ public class WorkspaceService {
 
     public void createWorkspace(NewWorkspaceRequest workspaceDto){
         Workspace workspace = WorkspaceMapper.fromDto(workspaceDto);
-        workspace = workspaceRepository.save(workspace);
+        workspaceRepository.save(workspace);
         User user = userService.getAuthenticatedUser();
 
         Membership membership = MembershipMapper.createMembership(workspace, user, Role.ROLE_ADMIN);
 
         membershipRepository.save(membership);
-        workspace.getMemberships().add(membership);
-
     }
 
     public void addMember(MembershipRequest membershipRequest){
@@ -72,6 +70,15 @@ public class WorkspaceService {
     }
 
     public void updateRoles(MembershipRequest membershipRequest){
-        // TODO: may need new DTO class
+        WorkspaceMember workspaceMember = membershipRequest.getWorkspaceMember();
+        Role currentRole = membershipRequest.getRole();
+        Membership membership = membershipRepository.findByWorkspaceIdAndUserId
+                (workspaceMember.getWorkspaceID(), workspaceMember.getUserID())
+                .orElseThrow(() -> new RuntimeException("User does not exist"));
+
+        if(!membership.getRole().equals(currentRole)){
+            membership.setRole(membershipRequest.getRole());
+            membershipRepository.save(membership);
+        }
     }
 }

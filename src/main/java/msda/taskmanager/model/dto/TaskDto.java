@@ -1,6 +1,7 @@
 package msda.taskmanager.model.dto;
 
 import lombok.Data;
+import msda.taskmanager.model.enums.TaskStatus;
 
 @Data
 public class TaskDto {
@@ -10,5 +11,6 @@ public class TaskDto {
     private String authorUsername;
     private String receiverUsername;
     private String workspaceName;
+    private TaskStatus status;
 
 }
