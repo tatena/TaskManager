@@ -4,19 +4,16 @@ import msda.taskmanager.mapper.MembershipMapper;
 import msda.taskmanager.mapper.WorkspaceMapper;
 import msda.taskmanager.model.dto.MembershipRequest;
 import msda.taskmanager.model.dto.NewWorkspaceRequest;
-import msda.taskmanager.model.dto.WorkspaceDto;
 import msda.taskmanager.model.dto.WorkspaceMember;
 import msda.taskmanager.model.entity.Membership;
 import msda.taskmanager.model.entity.User;
 import msda.taskmanager.model.entity.Workspace;
 import msda.taskmanager.model.enums.Role;
 import msda.taskmanager.repository.MembershipRepository;
+import msda.taskmanager.repository.TaskRepository;
 import msda.taskmanager.repository.UserRepository;
 import msda.taskmanager.repository.WorkspaceRepository;
 import org.springframework.stereotype.Service;
-
-import java.lang.reflect.Member;
-import java.util.Optional;
 
 @Service
 public class WorkspaceService {
@@ -25,12 +22,14 @@ public class WorkspaceService {
     private final MembershipRepository membershipRepository;
     private final UserService userService;
     private final UserRepository userRepository;
+    private final TaskRepository taskRepository;
 
-    public WorkspaceService(WorkspaceRepository workspaceRepository, MembershipRepository membershipRepository, UserService userService, UserRepository userRepository) {
+    public WorkspaceService(WorkspaceRepository workspaceRepository, MembershipRepository membershipRepository, UserService userService, UserRepository userRepository, TaskRepository taskRepository) {
         this.workspaceRepository = workspaceRepository;
         this.membershipRepository = membershipRepository;
         this.userService = userService;
         this.userRepository = userRepository;
+        this.taskRepository = taskRepository;
     }
 
     public void createWorkspace(NewWorkspaceRequest workspaceDto){
@@ -66,7 +65,17 @@ public class WorkspaceService {
     }
 
     public void deleteWorkspace(Long workspaceID){
-        // TODO: check permission, then delete
+        User user = userService.getAuthenticatedUser();
+        Membership membership = membershipRepository.findByWorkspaceIdAndUserId(workspaceID, user.getId())
+                .orElseThrow(() -> new RuntimeException("no such user in this workspace"));
+        if(membership.getRole().equals(Role.ROLE_ADMIN)){
+            Workspace workspace = workspaceRepository.findById(workspaceID)
+                    .orElseThrow(() -> new RuntimeException("no such workspace"));
+
+            membershipRepository.deleteMembershipsByWorkspaceId(workspaceID);
+            taskRepository.deleteTaskByWorkspaceId(workspaceID);
+            workspaceRepository.delete(workspace);
+        }
     }
 
     public void updateRoles(MembershipRequest membershipRequest){

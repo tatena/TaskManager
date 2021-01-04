@@ -41,6 +41,6 @@ public class WorkspaceController {
 
     @DeleteMapping("/delete")
     public void deleteWorkspace(@RequestParam Long workspaceID){
-        // TODO: check permission, then delete
+        workspaceService.deleteWorkspace(workspaceID);
     }
 }
