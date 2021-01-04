@@ -31,6 +31,7 @@ public class AuthService {
         newUser.setUsername(signUpRequest.getUsername());
         newUser.setPassword(encodedPassword);
         newUser.setRole(Role.ROLE_USER);
+        newUser.setDeleted(false);
 
         if (userRepository.findByUsername(signUpRequest.getUsername()).isPresent()) {
             throw  new RuntimeException("User already exists");

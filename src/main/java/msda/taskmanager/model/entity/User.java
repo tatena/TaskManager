@@ -4,16 +4,20 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import msda.taskmanager.model.enums.Role;
+import org.hibernate.annotations.*;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "USERS", schema = "TASK_MANAGER")
+@Table(name = "users", schema = "task_manager")
 @Setter
 @Getter
 @EqualsAndHashCode(callSuper = false)
+@SQLDelete(sql = "UPDATE users SET deleted=true WHERE id=?")
 public class User {
 
     @Id
@@ -38,13 +42,16 @@ public class User {
     private Role role;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    List<Membership> memberships;
+    private List<Membership> memberships;
 
     @OneToMany(mappedBy = "receiver", fetch = FetchType.LAZY)
-    List<Task> receivedTasks;
+    private List<Task> receivedTasks;
 
     @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
-    List<Task> createdTasks;
+    private List<Task> createdTasks;
+
+    @Column(name = "DELETED")
+    private Boolean deleted;
 
     public List<Workspace> getWorkspaces() {
         List<Workspace> res = new ArrayList<>();

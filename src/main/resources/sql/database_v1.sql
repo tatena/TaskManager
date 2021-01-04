@@ -73,3 +73,6 @@ CREATE TABLE `task_manager`.`tasks`
             ON DELETE NO ACTION
             ON UPDATE NO ACTION
 );
+
+ALTER TABLE `task_manager`.`users`
+    CHANGE COLUMN `deleted` `deleted` BIT(1) NOT NULL ;
