@@ -3,7 +3,9 @@ package msda.taskmanager.Service;
 import msda.taskmanager.mapper.MembershipMapper;
 import msda.taskmanager.mapper.WorkspaceMapper;
 import msda.taskmanager.model.dto.MembershipRequest;
+import msda.taskmanager.model.dto.NewWorkspaceRequest;
 import msda.taskmanager.model.dto.WorkspaceDto;
+import msda.taskmanager.model.dto.WorkspaceMember;
 import msda.taskmanager.model.entity.Membership;
 import msda.taskmanager.model.entity.User;
 import msda.taskmanager.model.entity.Workspace;
@@ -31,7 +33,7 @@ public class WorkspaceService {
         this.userRepository = userRepository;
     }
 
-    public void createWorkspace(WorkspaceDto workspaceDto){
+    public void createWorkspace(NewWorkspaceRequest workspaceDto){
         Workspace workspace = WorkspaceMapper.fromDto(workspaceDto);
         workspace = workspaceRepository.save(workspace);
         User user = userService.getAuthenticatedUser();
@@ -44,31 +46,32 @@ public class WorkspaceService {
     }
 
     public void addMember(MembershipRequest membershipRequest){
-        User user = userRepository.findByUsername(membershipRequest.getUsername())
+        WorkspaceMember workspaceMember = membershipRequest.getWorkspaceMember();
+        User user = userRepository.findById(workspaceMember.getUserID())
                     .orElseThrow(() -> new RuntimeException("User does not exist"));
 
+        Workspace workspace = workspaceRepository.getById(workspaceMember.getWorkspaceID())
+                    .orElseThrow(() -> new RuntimeException("Workspace doesn't exist"));
+
         Membership membership = MembershipMapper.createMembership(
-                membershipRequest.getWorkspace(),
-                user,
-                membershipRequest.getRole());
+                workspace, user, membershipRequest.getRole());
 
         membershipRepository.save(membership);
     }
 
-    public void removeMember(MembershipRequest membershipRequest){
-        User user = userRepository.findByUsername(membershipRequest.getUsername())
+    public void removeMember(WorkspaceMember workspaceMember){
+        Membership membership = membershipRepository.findByWorkspaceIdAndUserId
+                (workspaceMember.getWorkspaceID(), workspaceMember.getUserID())
                 .orElseThrow(() -> new RuntimeException("User does not exist"));
-
-        Membership membership = MembershipMapper.createMembership(
-                membershipRequest.getWorkspace(),
-                user,
-                membershipRequest.getRole());
 
         membershipRepository.delete(membership);
     }
 
-    /* TODO: may need new DTO class */
-    public void updateRoles(MembershipRequest membershipRequest){
+    public void deleteWorkspace(Long workspaceID){
+        // TODO: check permission, then delete
+    }
 
+    public void updateRoles(MembershipRequest membershipRequest){
+        // TODO: may need new DTO class
     }
 }

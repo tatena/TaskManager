@@ -3,9 +3,7 @@ package msda.taskmanager.controller;
 
 
 import msda.taskmanager.Service.WorkspaceService;
-import msda.taskmanager.model.dto.MembershipRequest;
-import msda.taskmanager.model.dto.TaskDto;
-import msda.taskmanager.model.dto.WorkspaceDto;
+import msda.taskmanager.model.dto.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,7 +20,7 @@ public class WorkspaceController {
     }
 
     @PostMapping
-    public void createWorkspace(@RequestBody WorkspaceDto workspaceDto){
+    public void createWorkspace(@RequestBody NewWorkspaceRequest workspaceDto){
         workspaceService.createWorkspace(workspaceDto);
     }
 
@@ -32,7 +30,7 @@ public class WorkspaceController {
     }
 
     @DeleteMapping
-    public void removeMember(MembershipRequest membershipRequest){
+    public void removeMember(WorkspaceMember membershipRequest){
         workspaceService.removeMember(membershipRequest);
     }
 
@@ -41,4 +39,8 @@ public class WorkspaceController {
         /* TODO: may need new DTO class */
     }
 
+    @DeleteMapping("workspace")
+    public void deleteWorkspace(@RequestParam Long workspaceID){
+        // TODO: check permission, then delete
+    }
 }
