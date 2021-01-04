@@ -75,4 +75,4 @@ CREATE TABLE `task_manager`.`tasks`
 );
 
 ALTER TABLE `task_manager`.`users`
-    CHANGE COLUMN `deleted` `deleted` BIT(1) NOT NULL ;
+    ADD COLUMN `deleted` BIT(1) NOT NULL AFTER `role`;

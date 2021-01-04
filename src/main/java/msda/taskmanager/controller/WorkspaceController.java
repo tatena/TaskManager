@@ -4,6 +4,8 @@ package msda.taskmanager.controller;
 
 import msda.taskmanager.Service.WorkspaceService;
 import msda.taskmanager.model.dto.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,27 +22,32 @@ public class WorkspaceController {
     }
 
     @PostMapping
-    public void createWorkspace(@RequestBody NewWorkspaceRequest workspaceDto){
+    public ResponseEntity<Void> createWorkspace(@RequestBody NewWorkspaceRequest workspaceDto){
         workspaceService.createWorkspace(workspaceDto);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PutMapping
-    public void addMember(MembershipRequest membershipRequest){
+    public ResponseEntity<Void> addMember(@RequestBody MembershipRequest membershipRequest){
         workspaceService.addMember(membershipRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @DeleteMapping
-    public void removeMember(WorkspaceMember membershipRequest){
+    public ResponseEntity<Void> removeMember(@RequestBody WorkspaceMember membershipRequest){
         workspaceService.removeMember(membershipRequest);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @PutMapping("/roles")
-    public void updateRoles(MembershipRequest membershipRequest){
+    public ResponseEntity<Void> updateRoles(@RequestBody MembershipRequest membershipRequest){
         workspaceService.updateRoles(membershipRequest);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @DeleteMapping("/delete")
-    public void deleteWorkspace(@RequestParam Long workspaceID){
+    public ResponseEntity<Void> deleteWorkspace(@RequestParam Long workspaceID){
         workspaceService.deleteWorkspace(workspaceID);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }
