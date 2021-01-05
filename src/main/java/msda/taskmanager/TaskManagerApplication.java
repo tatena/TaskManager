@@ -15,11 +15,11 @@ import java.util.TimeZone;
 @EnableJpaRepositories("msda.taskmanager.repository")
 public class TaskManagerApplication {
 
-    @PostConstruct
-    public void init(){
-        // Setting Spring Boot SetTimeZone
-        TimeZone.setDefault(TimeZone.getTimeZone("G"));
-    }
+//    @PostConstruct
+//    public void init(){
+//        // Setting Spring Boot SetTimeZone
+//        TimeZone.setDefault(TimeZone.getTimeZone("G"));
+//    }
 
     public static void main(String[] args) {
         SpringApplication.run(TaskManagerApplication.class, args);

@@ -3,24 +3,22 @@ package msda.taskmanager.controller.logger;
 import msda.taskmanager.Service.UserService;
 import msda.taskmanager.model.entity.User;
 import msda.taskmanager.utils.RequestService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
-import java.net.InetAddress;
 
 @Aspect
 @Order(0)
 @Component
 public class ControllerLogger {
 
-    private final Logger log = LoggerFactory.getLogger(getClass());
+    private static final Logger log = LogManager.getLogger(ControllerLogger.class);
     private final RequestService requestService;
     private final UserService userService;
 
