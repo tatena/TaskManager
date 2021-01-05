@@ -1,10 +1,14 @@
+
 package msda.taskmanager.controller;
 
 
 import msda.taskmanager.Service.TaskService;
 import msda.taskmanager.model.dto.TaskAssignment;
 import msda.taskmanager.model.dto.TaskDto;
-import org.springframework.beans.factory.annotation.Autowired;
+import msda.taskmanager.model.dto.TaskStatusUpdate;
+import msda.taskmanager.model.entity.Task;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,18 +24,21 @@ public class TaskController {
     }
 
     @PostMapping
-    public void assignTask(TaskAssignment taskDto, HttpServletRequest request){
+    public ResponseEntity<Void> assignTask(@RequestBody TaskAssignment taskDto, HttpServletRequest request){
         taskService.assignTask(taskDto);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PutMapping
-    public void updateTaskStatus(TaskDto taskDto, HttpServletRequest request){
+    public ResponseEntity<Void> updateTaskStatus(@RequestBody TaskStatusUpdate taskDto, HttpServletRequest request){
         taskService.updateTaskStatus(taskDto);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @DeleteMapping
-    public void cancelTask(TaskDto taskDto, HttpServletRequest request){
-        taskService.cancelTask(taskDto);
+    public ResponseEntity<Void> cancelTask(@RequestParam Long taskID, HttpServletRequest request){
+        taskService.cancelTask(taskID);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
 }

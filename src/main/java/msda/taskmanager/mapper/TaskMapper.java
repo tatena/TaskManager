@@ -2,6 +2,9 @@ package msda.taskmanager.mapper;
 
 import msda.taskmanager.model.dto.TaskDto;
 import msda.taskmanager.model.entity.Task;
+import msda.taskmanager.model.entity.User;
+import msda.taskmanager.model.entity.Workspace;
+import msda.taskmanager.model.enums.TaskStatus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,5 +31,15 @@ public class TaskMapper {
         }
 
         return res;
+    }
+
+    public static Task fromDto(String desc, User author, User receiver, Workspace workspace){
+        Task task = new Task();
+        task.setDescription(desc);
+        task.setAuthor(author);
+        task.setReceiver(receiver);
+        task.setStatus(TaskStatus.TO_DO);
+        task.setWorkspace(workspace);
+        return task;
     }
 }
