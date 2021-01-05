@@ -100,4 +100,12 @@ public class AdminService {
         List<User> users = userRepository.findAllByDeleted(isDeleted);
         return UserMapper.toDtoList(users);
     }
+
+    public UserDto getUserByUsername(String username) {
+        Optional<User> userOptional = userRepository.findByUsername(username);
+
+        User user = userOptional.orElseThrow(() -> new RuntimeException("User with id does not exist"));
+
+        return UserMapper.toDto(user);
+    }
 }

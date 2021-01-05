@@ -3,6 +3,7 @@ package msda.taskmanager.model.entity;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import msda.taskmanager.model.enums.Role;
 import org.hibernate.annotations.*;
 
@@ -18,6 +19,7 @@ import java.util.List;
 @Getter
 @EqualsAndHashCode(callSuper = false)
 @SQLDelete(sql = "UPDATE users SET deleted=true WHERE id=?")
+@ToString(exclude = {"memberships", "receivedTasks", "createdTasks"})
 public class User {
 
     @Id

@@ -7,6 +7,8 @@ import msda.taskmanager.model.dto.TaskDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
 @RequestMapping("/api/task")
 public class TaskController {
@@ -18,17 +20,17 @@ public class TaskController {
     }
 
     @PostMapping
-    public void assignTask(TaskAssignment taskDto){
+    public void assignTask(TaskAssignment taskDto, HttpServletRequest request){
         taskService.assignTask(taskDto);
     }
 
     @PutMapping
-    public void updateTaskStatus(TaskDto taskDto){
+    public void updateTaskStatus(TaskDto taskDto, HttpServletRequest request){
         taskService.updateTaskStatus(taskDto);
     }
 
     @DeleteMapping
-    public void cancelTask(TaskDto taskDto){
+    public void cancelTask(TaskDto taskDto, HttpServletRequest request){
         taskService.cancelTask(taskDto);
     }
 

@@ -3,6 +3,7 @@ package msda.taskmanager.model.entity;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import msda.taskmanager.model.enums.Role;
 
 import javax.persistence.*;
@@ -12,6 +13,7 @@ import javax.persistence.*;
 @Setter
 @Getter
 @EqualsAndHashCode(callSuper = false)
+@ToString
 public class Membership {
 
     @Id

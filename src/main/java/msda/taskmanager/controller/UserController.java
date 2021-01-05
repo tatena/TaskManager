@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -22,17 +23,17 @@ public class UserController {
     }
 
     @GetMapping("/workspaces")
-    public ResponseEntity<List<WorkspaceDto>> getUserWorkspaces(){
+    public ResponseEntity<List<WorkspaceDto>> getUserWorkspaces(HttpServletRequest request){
         return ResponseEntity.status(HttpStatus.OK).body(userService.getUserWorkspaces());
     }
 
     @GetMapping("/tasks/received")
-    public ResponseEntity<List<TaskDto>> getUserReceivedTasks(){
+    public ResponseEntity<List<TaskDto>> getUserReceivedTasks(HttpServletRequest request){
         return ResponseEntity.status(HttpStatus.OK).body(userService.getUserReceivedTasks());
     }
 
     @GetMapping("/tasks/created")
-    public ResponseEntity<List<TaskDto>> getUserCreatedTasks(){
+    public ResponseEntity<List<TaskDto>> getUserCreatedTasks(HttpServletRequest request){
         return ResponseEntity.status(HttpStatus.OK).body(userService.getUserCreatedTasks());
     }
 
