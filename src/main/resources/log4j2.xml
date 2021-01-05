@@ -1,11 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="WARN">
+    <Properties>
+        <!-- if we need exact json formatting -->
+<!--        <Property name="NewL">-->
+<!--            \n\t&quot;-->
+<!--        </Property>-->
+<!--        <Property name="Date">-->
+<!--            ${NewL}date&quot;: &quot;%d{yyyy-MM-dd HH:mm:ss.SSS}&quot;-->
+<!--        </Property>-->
+<!--        <Property name="Level">-->
+<!--            ${NewL}level&quot;: &quot;%-5level&quot;-->
+<!--        </Property>-->
+<!--        <Property name="Class">-->
+<!--            ${NewL}class&quot;: &quot;%logger{36}&quot;-->
+<!--        </Property>-->
+<!--        <Property name="Message">-->
+<!--            ${NewL}message&quot;: &quot;%msg&quot;%n-->
+<!--        </Property>-->
+        <Property name="NewL">
+            \n\t
+        </Property>
+        <Property name="Date">
+            ${NewL}date: %d{yyyy-MM-dd HH:mm:ss}
+        </Property>
+        <Property name="Level">
+            ${NewL}level: %-5level
+        </Property>
+        <Property name="Class">
+            ${NewL}class: %logger{36}
+        </Property>
+        <Property name="Message">
+            ${NewL}message: %msg%n
+        </Property>
+    </Properties>
     <Appenders>
         <Console name="Console" target="SYSTEM_OUT">
-            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+            <PatternLayout pattern="LogObject{${Date}${Level}${Class}${Message}}\n"/>
         </Console>
         <File name="FileLogger" fileName="Logs\\test.log" immediateFlush="true">
-            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger{36} - %msg%n"/>
+            <PatternLayout pattern="LogObject{${Date}${Level}${Class}${Message}}\n"/>
         </File>
     </Appenders>
     <Loggers>
