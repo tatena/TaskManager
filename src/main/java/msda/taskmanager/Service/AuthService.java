@@ -32,6 +32,7 @@ public class AuthService {
         newUser.setPassword(encodedPassword);
         newUser.setRole(Role.ROLE_USER);
         newUser.setDeleted(false);
+        newUser.setTimezone(signUpRequest.getTimezone());
 
         if (userRepository.findByUsername(signUpRequest.getUsername()).isPresent()) {
             throw  new RuntimeException("User already exists");

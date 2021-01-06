@@ -7,6 +7,8 @@ import lombok.ToString;
 import msda.taskmanager.model.enums.TaskStatus;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "TASKS", schema = "TASK_MANAGER")
@@ -40,5 +42,14 @@ public class Task {
     @Column(name = "STATUS")
     @Enumerated(EnumType.STRING)
     private TaskStatus status;
+
+    @Column(name = "START_DATE", columnDefinition = "DATETIME")
+    private LocalDateTime startDate;
+
+    @Column(name = "END_DATE", columnDefinition = "DATETIME")
+    private LocalDateTime endDate;
+
+    @Column(name = "DEADLINE", columnDefinition = "DATETIME")
+    private LocalDateTime deadline;
 
 }

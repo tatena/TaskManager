@@ -1,5 +1,6 @@
 package msda.taskmanager.Service;
 
+import msda.taskmanager.TaskManagerApplication;
 import msda.taskmanager.mapper.TaskMapper;
 import msda.taskmanager.model.dto.TaskAssignment;
 import msda.taskmanager.model.dto.TaskDto;
@@ -14,6 +15,8 @@ import msda.taskmanager.repository.TaskRepository;
 import msda.taskmanager.repository.UserRepository;
 import msda.taskmanager.repository.WorkspaceRepository;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 
 @Service
 public class TaskService {
@@ -49,6 +52,7 @@ public class TaskService {
         }
 
         Task task = TaskMapper.fromDto(taskDto.getDescription(), author, receiver, workspace);
+        TaskMapper.setServiceDates(author.getTimezone(), workspace.getTimezone(),taskDto.getDates(), task);
 
         taskRepository.save(task);
     }
@@ -64,6 +68,9 @@ public class TaskService {
 
         TaskStatus currentStatus = taskDto.getStatus();
         if(!task.getStatus().equals(currentStatus)){
+            if(currentStatus.equals(TaskStatus.DONE)){
+                task.setEndDate(LocalDateTime.now().minusHours(-TaskManagerApplication.TIME_ZONE));
+            }
             task.setStatus(currentStatus);
             taskRepository.save(task);
         }
