@@ -12,6 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -23,25 +24,25 @@ public class UserService {
     }
 
     public List<WorkspaceDto> getUserWorkspaces() {
-        User user = getAuthenticatedUser();
+        User user = getAuthenticatedUser().orElseThrow(() -> new RuntimeException("User not found"));
         return WorkspaceMapper.toDtoList(user.getWorkspaces());
     }
 
     public List<TaskDto> getUserReceivedTasks() {
-        User user = getAuthenticatedUser();
+        User user = getAuthenticatedUser().orElseThrow(() -> new RuntimeException("User not found"));
         return TaskMapper.toDtoList(user.getReceivedTasks());
     }
 
     public List<TaskDto> getUserCreatedTasks() {
-        User user = getAuthenticatedUser();
+        User user = getAuthenticatedUser().orElseThrow(() -> new RuntimeException("User not found"));
         return TaskMapper.toDtoList(user.getCreatedTasks());
     }
 
-    public User getAuthenticatedUser() {
+    public Optional<User> getAuthenticatedUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userName = (String) authentication.getPrincipal();
 
-        return userRepository.findByUsername(userName).orElseThrow(() -> new RuntimeException("Not authorized"));
+        return userRepository.findByUsername(userName);
     }
 
 }

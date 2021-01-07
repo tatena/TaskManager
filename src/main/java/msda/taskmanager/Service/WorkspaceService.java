@@ -35,7 +35,7 @@ public class WorkspaceService {
     public void createWorkspace(NewWorkspaceRequest workspaceDto){
         Workspace workspace = WorkspaceMapper.fromDto(workspaceDto);
         workspaceRepository.save(workspace);
-        User user = userService.getAuthenticatedUser();
+        User user = userService.getAuthenticatedUser().orElseThrow(() -> new RuntimeException("User not found"));
 
         Membership membership = MembershipMapper.createMembership(workspace, user, Role.ROLE_ADMIN);
 
@@ -65,7 +65,7 @@ public class WorkspaceService {
     }
 
     public void deleteWorkspace(Long workspaceID){
-        User user = userService.getAuthenticatedUser();
+        User user = userService.getAuthenticatedUser().orElseThrow(() -> new RuntimeException("User not found"));
         Membership membership = membershipRepository.findByWorkspaceIdAndUserId(workspaceID, user.getId())
                 .orElseThrow(() -> new RuntimeException("no such user in this workspace"));
         if(membership.getRole().equals(Role.ROLE_ADMIN)){

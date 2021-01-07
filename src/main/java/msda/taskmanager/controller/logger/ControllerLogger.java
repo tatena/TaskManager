@@ -12,6 +12,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Optional;
 
 @Aspect
 @Order(0)
@@ -51,8 +52,8 @@ public class ControllerLogger {
             }
         }
 
-        User user = userService.getAuthenticatedUser();
-        if (user == null) {
+        Optional<User> user = userService.getAuthenticatedUser();
+        if (!user.isPresent()) {
             userInfo += " USER INFO: User not authorized";
         } else {
             userInfo += " USER INFO: " + user.toString();

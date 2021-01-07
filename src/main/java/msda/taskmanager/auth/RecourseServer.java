@@ -23,7 +23,7 @@ public class RecourseServer {
             http
                     .authorizeRequests()
                     .antMatchers("/api/**").authenticated()
-                    .antMatchers("/", "/api/auth").permitAll();
+                    .antMatchers("/", "/auth/**").permitAll();
         }
     }
 }

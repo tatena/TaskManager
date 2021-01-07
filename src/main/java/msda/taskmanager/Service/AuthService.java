@@ -1,6 +1,8 @@
 package msda.taskmanager.Service;
 
+import msda.taskmanager.mapper.UserMapper;
 import msda.taskmanager.model.dto.SignUpRequest;
+import msda.taskmanager.model.dto.UserDto;
 import msda.taskmanager.model.entity.User;
 import msda.taskmanager.model.enums.Role;
 import msda.taskmanager.repository.UserRepository;
@@ -22,7 +24,7 @@ public class AuthService {
     }
 
 
-    public void signUpUser(SignUpRequest signUpRequest) {
+    public UserDto signUpUser(SignUpRequest signUpRequest) {
         User newUser = new User();
         String encodedPassword = passwordEncoder.encode(signUpRequest.getPassword());
 
@@ -37,7 +39,7 @@ public class AuthService {
             throw  new RuntimeException("User already exists");
         }
 
-        userRepository.save(newUser);
+        return UserMapper.toDto(userRepository.save(newUser));
     }
 
 }

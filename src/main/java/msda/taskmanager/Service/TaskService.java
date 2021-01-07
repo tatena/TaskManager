@@ -35,7 +35,7 @@ public class TaskService {
     public void assignTask(TaskAssignment taskDto){
         User receiver = userRepository.findById(taskDto.getReceiverID())
                     .orElseThrow(() -> new RuntimeException("No such receiver"));
-        User author = userService.getAuthenticatedUser();
+        User author = userService.getAuthenticatedUser().orElseThrow(() -> new RuntimeException("User not found"));
 
         Workspace workspace = workspaceRepository.findById(taskDto.getWorkspaceID())
                     .orElseThrow(() -> new RuntimeException("No such workspace !"));
@@ -57,7 +57,7 @@ public class TaskService {
         Task task = taskRepository.findById(taskDto.getTaskID())
                 .orElseThrow(() -> new RuntimeException("No such task id present in DB"));
 
-        User activeUser = userService.getAuthenticatedUser();
+        User activeUser = userService.getAuthenticatedUser().orElseThrow(() -> new RuntimeException("User not found"));
         if(!task.getReceiver().getId().equals(activeUser.getId())){
             throw new RuntimeException("Only task receiver can alter the status");
         }
@@ -74,7 +74,7 @@ public class TaskService {
         Task task = taskRepository.findById(taskID)
                 .orElseThrow(() -> new RuntimeException("No such task id present in DB"));
 
-        User activeUser = userService.getAuthenticatedUser();
+        User activeUser = userService.getAuthenticatedUser().orElseThrow(() -> new RuntimeException("User not found"));
         if(!task.getAuthor().getId().equals(activeUser.getId())){
             throw new RuntimeException("Only task author can delete the task");
         }

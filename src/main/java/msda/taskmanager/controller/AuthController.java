@@ -2,6 +2,7 @@ package msda.taskmanager.controller;
 
 import msda.taskmanager.Service.AuthService;
 import msda.taskmanager.model.dto.SignUpRequest;
+import msda.taskmanager.model.dto.UserDto;
 import msda.taskmanager.utils.RequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,9 +24,8 @@ public class AuthController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> signUpUser(@RequestBody SignUpRequest signUpRequest, HttpServletRequest request) {
-        authService.signUpUser(signUpRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+    public ResponseEntity<UserDto> signUpUser(@RequestBody SignUpRequest signUpRequest, HttpServletRequest request) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(authService.signUpUser(signUpRequest));
     }
 
 }
