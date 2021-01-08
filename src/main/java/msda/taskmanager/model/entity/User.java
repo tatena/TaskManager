@@ -55,6 +55,9 @@ public class User {
     @Column(name = "DELETED")
     private Boolean deleted;
 
+    @Column(name = "TIMEZONE")
+    private Integer timezone;
+
     public List<Workspace> getWorkspaces() {
         List<Workspace> res = new ArrayList<>();
 
