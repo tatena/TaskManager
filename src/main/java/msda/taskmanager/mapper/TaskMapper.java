@@ -25,6 +25,7 @@ public class TaskMapper {
         res.setReceiverUsername(task.getReceiver().getUsername());
         res.setWorkspaceName(task.getWorkspace().getTitle());
         res.setDescription(task.getDescription());
+        res.setStatus(task.getStatus());
 
         int workspaceTimezone = task.getWorkspace().getTimezone();
         res.setStartDate(getTaskDates(userTimezone, workspaceTimezone, task.getStartDate()));

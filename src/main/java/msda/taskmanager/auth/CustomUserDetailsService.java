@@ -22,6 +22,9 @@ public class CustomUserDetailsService implements UserDetailsService {
         Optional<User> userOptional = userRepository.findByUsername(username);
 
         User user = userOptional.orElseThrow(() -> new RuntimeException("User does not exist"));
+        if (user.getDeleted()) {
+            throw new RuntimeException("User is deleted");
+        }
 
         return new CustomUserPrincipal(user);
     }

@@ -16,6 +16,7 @@ import msda.taskmanager.repository.UserRepository;
 import msda.taskmanager.repository.WorkspaceRepository;
 import org.springframework.stereotype.Service;
 
+
 import java.time.LocalDateTime;
 
 @Service
@@ -35,10 +36,10 @@ public class TaskService {
         this.membershipRepository = membershipRepository;
     }
 
-    public void assignTask(TaskAssignment taskDto){
+    public TaskDto assignTask(TaskAssignment taskDto){
         User receiver = userRepository.findById(taskDto.getReceiverID())
                     .orElseThrow(() -> new RuntimeException("No such receiver"));
-        User author = userService.getAuthenticatedUser();
+        User author = userService.getAuthenticatedUser().orElseThrow(() -> new RuntimeException("User not found"));
 
         Workspace workspace = workspaceRepository.findById(taskDto.getWorkspaceID())
                     .orElseThrow(() -> new RuntimeException("No such workspace !"));
@@ -54,14 +55,14 @@ public class TaskService {
         Task task = TaskMapper.fromDto(taskDto.getDescription(), author, receiver, workspace);
         TaskMapper.setServiceDates(author.getTimezone(), workspace.getTimezone(),taskDto.getDates(), task);
 
-        taskRepository.save(task);
+        return TaskMapper.toDto(taskRepository.save(task));
     }
 
-    public void updateTaskStatus(TaskStatusUpdate taskDto){
+    public TaskDto updateTaskStatus(TaskStatusUpdate taskDto){
         Task task = taskRepository.findById(taskDto.getTaskID())
                 .orElseThrow(() -> new RuntimeException("No such task id present in DB"));
 
-        User activeUser = userService.getAuthenticatedUser();
+        User activeUser = userService.getAuthenticatedUser().orElseThrow(() -> new RuntimeException("User not found"));
         if(!task.getReceiver().getId().equals(activeUser.getId())){
             throw new RuntimeException("Only task receiver can alter the status");
         }
@@ -72,16 +73,17 @@ public class TaskService {
                 task.setEndDate(LocalDateTime.now().minusHours(TaskManagerApplication.TIME_ZONE));
             }
             task.setStatus(currentStatus);
-            taskRepository.save(task);
+            task = taskRepository.save(task);
         }
 
+        return TaskMapper.toDto(task);
     }
 
     public void cancelTask(Long taskID){
         Task task = taskRepository.findById(taskID)
                 .orElseThrow(() -> new RuntimeException("No such task id present in DB"));
 
-        User activeUser = userService.getAuthenticatedUser();
+        User activeUser = userService.getAuthenticatedUser().orElseThrow(() -> new RuntimeException("User not found"));
         if(!task.getAuthor().getId().equals(activeUser.getId())){
             throw new RuntimeException("Only task author can delete the task");
         }
@@ -96,5 +98,30 @@ public class TaskService {
             }
         }
         return false;
+    }
+
+    public TaskDto getById(Long id) {
+        Optional<Task> taskOptional = taskRepository.findById(id);
+        Task task = taskOptional.orElseThrow(() -> new RuntimeException("Task not found"));
+
+        return TaskMapper.toDto(task);
+    }
+
+    public List<TaskDto> getAll() {
+        return TaskMapper.toDtoList(taskRepository.findAll());
+    }
+
+    public TaskDto doTask(Long id) {
+        Task task = taskRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("No such task id present in DB"));
+
+        User activeUser = userService.getAuthenticatedUser().orElseThrow(() -> new RuntimeException("User not found"));
+        if(!task.getReceiver().getId().equals(activeUser.getId())){
+            throw new RuntimeException("Only task receiver can do the task");
+        }
+
+        task.setStatus(TaskStatus.DONE);
+
+        return TaskMapper.toDto(taskRepository.save(task));
     }
 }

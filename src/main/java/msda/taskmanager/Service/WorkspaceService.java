@@ -4,6 +4,7 @@ import msda.taskmanager.mapper.MembershipMapper;
 import msda.taskmanager.mapper.WorkspaceMapper;
 import msda.taskmanager.model.dto.MembershipRequest;
 import msda.taskmanager.model.dto.NewWorkspaceRequest;
+import msda.taskmanager.model.dto.WorkspaceDto;
 import msda.taskmanager.model.dto.WorkspaceMember;
 import msda.taskmanager.model.entity.Membership;
 import msda.taskmanager.model.entity.User;
@@ -13,7 +14,11 @@ import msda.taskmanager.repository.MembershipRepository;
 import msda.taskmanager.repository.TaskRepository;
 import msda.taskmanager.repository.UserRepository;
 import msda.taskmanager.repository.WorkspaceRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class WorkspaceService {
@@ -32,14 +37,16 @@ public class WorkspaceService {
         this.taskRepository = taskRepository;
     }
 
-    public void createWorkspace(NewWorkspaceRequest workspaceDto){
+    public WorkspaceDto createWorkspace(NewWorkspaceRequest workspaceDto){
         Workspace workspace = WorkspaceMapper.fromDto(workspaceDto);
-        workspaceRepository.save(workspace);
-        User user = userService.getAuthenticatedUser();
+        workspace = workspaceRepository.save(workspace);
+        User user = userService.getAuthenticatedUser().orElseThrow(() -> new RuntimeException("User not found"));
 
         Membership membership = MembershipMapper.createMembership(workspace, user, Role.ROLE_ADMIN);
 
         membershipRepository.save(membership);
+
+        return WorkspaceMapper.toDto(workspace);
     }
 
     public void addMember(MembershipRequest membershipRequest){
@@ -59,13 +66,13 @@ public class WorkspaceService {
     public void removeMember(WorkspaceMember workspaceMember){
         Membership membership = membershipRepository.findByWorkspaceIdAndUserId
                 (workspaceMember.getWorkspaceID(), workspaceMember.getUserID())
-                .orElseThrow(() -> new RuntimeException("User does not exist"));
+                .orElseThrow(() -> new RuntimeException("User or workspace does not exist"));
 
         membershipRepository.delete(membership);
     }
 
     public void deleteWorkspace(Long workspaceID){
-        User user = userService.getAuthenticatedUser();
+        User user = userService.getAuthenticatedUser().orElseThrow(() -> new RuntimeException("User not found"));
         Membership membership = membershipRepository.findByWorkspaceIdAndUserId(workspaceID, user.getId())
                 .orElseThrow(() -> new RuntimeException("no such user in this workspace"));
         if(membership.getRole().equals(Role.ROLE_ADMIN)){
@@ -89,5 +96,35 @@ public class WorkspaceService {
             membership.setRole(membershipRequest.getRole());
             membershipRepository.save(membership);
         }
+    }
+
+    public WorkspaceDto getById(Long id) {
+        Optional<Workspace> workspaceOptional = workspaceRepository.getById(id);
+        Workspace workspace = workspaceOptional.orElseThrow(() -> new RuntimeException("Workspace not found"));
+
+        return WorkspaceMapper.toDto(workspace);
+    }
+
+    public List<WorkspaceDto> getAll() {
+       return WorkspaceMapper.toDtoList(workspaceRepository.findAll());
+    }
+
+    public WorkspaceDto update(WorkspaceDto params) {
+        Optional<Workspace> workspaceOptional = workspaceRepository.getById(params.getId());
+        Workspace workspace = workspaceOptional.orElseThrow(() -> new RuntimeException("Workspace not found"));
+
+        if (params.getDescription() != null) {
+            workspace.setDescription(params.getDescription());
+        }
+
+        if (params.getStatus() != null) {
+            workspace.setStatus(params.getStatus());
+        }
+
+        if (params.getTitle() != null) {
+            workspace.setTitle(params.getTitle());
+        }
+
+        return WorkspaceMapper.toDto(workspaceRepository.save(workspace));
     }
 }
