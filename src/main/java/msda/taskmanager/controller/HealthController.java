@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 public class HealthController {
-    @GetMapping("/health")
+    @GetMapping("/check")
     public ResponseEntity<Void> check(HttpServletRequest request) {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
