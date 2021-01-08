@@ -29,12 +29,12 @@ public class UserService {
 
     public List<TaskDto> getUserReceivedTasks() {
         User user = getAuthenticatedUser();
-        return TaskMapper.toDtoList(user.getReceivedTasks());
+        return TaskMapper.toDtoList(user, user.getReceivedTasks());
     }
 
     public List<TaskDto> getUserCreatedTasks() {
         User user = getAuthenticatedUser();
-        return TaskMapper.toDtoList(user.getCreatedTasks());
+        return TaskMapper.toDtoList(user, user.getCreatedTasks());
     }
 
     public User getAuthenticatedUser() {

@@ -69,7 +69,7 @@ public class TaskService {
         TaskStatus currentStatus = taskDto.getStatus();
         if(!task.getStatus().equals(currentStatus)){
             if(currentStatus.equals(TaskStatus.DONE)){
-                task.setEndDate(LocalDateTime.now().minusHours(-TaskManagerApplication.TIME_ZONE));
+                task.setEndDate(LocalDateTime.now().minusHours(TaskManagerApplication.TIME_ZONE));
             }
             task.setStatus(currentStatus);
             taskRepository.save(task);

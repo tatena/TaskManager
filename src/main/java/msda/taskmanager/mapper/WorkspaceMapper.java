@@ -31,6 +31,7 @@ public class WorkspaceMapper {
         return res;
     }
 
+    @Deprecated
     public static Workspace fromDto(WorkspaceDto workspaceDto){
         Workspace workspace = new Workspace();
 
@@ -50,6 +51,7 @@ public class WorkspaceMapper {
         workspace.setDescription(workspaceDto.getDescription());
         workspace.setStatus(WorkspaceStatus.ACTIVE);
         workspace.setMemberships(new ArrayList<>());
+        workspace.setTimezone(workspaceDto.getTimezone());
 
         return workspace;
     }

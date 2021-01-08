@@ -17,7 +17,7 @@ import java.util.List;
 
 public class TaskMapper {
 
-    public static TaskDto toDto(Task task) {
+    public static TaskDto toDto(Task task, int userTimezone) {
         TaskDto res = new TaskDto();
 
         res.setId(task.getId());
@@ -26,14 +26,19 @@ public class TaskMapper {
         res.setWorkspaceName(task.getWorkspace().getTitle());
         res.setDescription(task.getDescription());
 
+        int workspaceTimezone = task.getWorkspace().getTimezone();
+        res.setStartDate(getTaskDates(userTimezone, workspaceTimezone, task.getStartDate()));
+        res.setDeadline(getTaskDates(userTimezone, workspaceTimezone, task.getDeadline()));
+
         return res;
     }
 
-    public  static List<TaskDto> toDtoList(List<Task> tasks) {
+    public  static List<TaskDto> toDtoList(User user, List<Task> tasks) {
         List<TaskDto> res = new ArrayList<>();
+        int userTimezone = user.getTimezone();
 
         for (Task task : tasks) {
-            res.add(toDto(task));
+            res.add(toDto(task, userTimezone));
         }
 
         return res;

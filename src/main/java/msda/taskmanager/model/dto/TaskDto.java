@@ -3,6 +3,8 @@ package msda.taskmanager.model.dto;
 import lombok.Data;
 import msda.taskmanager.model.enums.TaskStatus;
 
+import java.time.LocalDateTime;
+
 @Data
 public class TaskDto {
 
@@ -12,5 +14,7 @@ public class TaskDto {
     private String receiverUsername;
     private String workspaceName;
     private TaskStatus status;
+    private LocalDateTime startDate;
+    private LocalDateTime deadline;
 
 }

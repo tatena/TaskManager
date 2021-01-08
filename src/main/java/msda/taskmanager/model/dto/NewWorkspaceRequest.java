@@ -7,4 +7,5 @@ import lombok.Data;
 public class NewWorkspaceRequest {
     private String title;
     private String description;
+    private Integer timezone;
 }
