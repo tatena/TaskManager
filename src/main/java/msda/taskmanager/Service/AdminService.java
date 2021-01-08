@@ -28,7 +28,7 @@ public class AdminService {
         this.entityManager = entityManager;
     }
 
-    public void updateUser(UserDto userDto) {
+    public UserDto updateUser(UserDto userDto) {
         Optional<User> userOptional = userRepository.findById(userDto.getId());
         User user = userOptional.orElseThrow(() -> new RuntimeException("User Does not exist"));
 
@@ -52,10 +52,10 @@ public class AdminService {
             user.setRole(userDto.getRole());
         }
 
-        userRepository.save(user);
+        return UserMapper.toDto(userRepository.save(user));
     }
 
-    public void createUser(CreateUserRequest createUserRequest) {
+    public UserDto createUser(CreateUserRequest createUserRequest) {
         User newUser = new User();
         String encodedPassword = passwordEncoder.encode(createUserRequest.getPassword());
 
@@ -64,12 +64,13 @@ public class AdminService {
         newUser.setUsername(createUserRequest.getUsername());
         newUser.setPassword(encodedPassword);
         newUser.setRole(createUserRequest.getRole());
+        newUser.setDeleted(false);
 
         if (userRepository.findByUsername(createUserRequest.getUsername()).isPresent()) {
             throw  new RuntimeException("User already exists");
         }
 
-        userRepository.save(newUser);
+        return UserMapper.toDto(userRepository.save(newUser));
     }
 
     public UserDto getUserById(Long id) {

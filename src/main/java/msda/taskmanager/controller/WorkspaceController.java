@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/workspace")
@@ -24,12 +25,11 @@ public class WorkspaceController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> createWorkspace(@RequestBody NewWorkspaceRequest workspaceDto, HttpServletRequest request){
-        workspaceService.createWorkspace(workspaceDto);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+    public ResponseEntity<WorkspaceDto> createWorkspace(@RequestBody NewWorkspaceRequest workspaceDto, HttpServletRequest request){
+        return ResponseEntity.status(HttpStatus.CREATED).body(workspaceService.createWorkspace(workspaceDto));
     }
 
-    @PutMapping
+    @PutMapping("/member")
     public ResponseEntity<Void> addMember(@RequestBody MembershipRequest membershipRequest, HttpServletRequest request){
         workspaceService.addMember(membershipRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();
@@ -48,8 +48,24 @@ public class WorkspaceController {
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<Void> deleteWorkspace(@RequestParam Long workspaceID, HttpServletRequest request){
-        workspaceService.deleteWorkspace(workspaceID);
+    public ResponseEntity<Void> deleteWorkspace(@RequestParam Long id, HttpServletRequest request){
+        workspaceService.deleteWorkspace(id);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
+
+    @GetMapping()
+    public ResponseEntity<WorkspaceDto> getById(@RequestParam Long id, HttpServletRequest request) {
+        return ResponseEntity.status(HttpStatus.OK).body(workspaceService.getById(id));
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<WorkspaceDto>> getAll(HttpServletRequest request) {
+        return ResponseEntity.status(HttpStatus.OK).body(workspaceService.getAll());
+    }
+
+    @PutMapping()
+    public ResponseEntity<WorkspaceDto> update(@RequestBody WorkspaceDto workspaceDto, HttpServletRequest request) {
+        return ResponseEntity.status(HttpStatus.OK).body(workspaceService.update(workspaceDto));
+    }
+
 }

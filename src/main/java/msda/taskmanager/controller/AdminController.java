@@ -2,13 +2,10 @@ package msda.taskmanager.controller;
 
 import msda.taskmanager.Service.AdminService;
 import msda.taskmanager.model.dto.CreateUserRequest;
-import msda.taskmanager.model.dto.SignUpRequest;
 import msda.taskmanager.model.dto.UserDto;
-import msda.taskmanager.utils.RequestService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,26 +13,23 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/admin")
+@PreAuthorize("hasRole(\"ROLE_ADMIN\")")
 public class AdminController {
 
     private final AdminService adminService;
-    private final RequestService requestService;
 
-    public AdminController(AdminService adminService, RequestService requestService) {
+    public AdminController(AdminService adminService) {
         this.adminService = adminService;
-        this.requestService = requestService;
     }
 
     @PutMapping
-    public ResponseEntity<Void> updateUser(@RequestBody UserDto userDto, HttpServletRequest request){
-        adminService.updateUser(userDto);
-        return ResponseEntity.status(HttpStatus.OK).build();
+    public ResponseEntity<UserDto> updateUser(@RequestBody UserDto userDto, HttpServletRequest request){
+        return ResponseEntity.status(HttpStatus.OK).body(adminService.updateUser(userDto));
     }
 
     @PostMapping
-    public ResponseEntity<Void> createUser(@RequestBody CreateUserRequest createUserRequest, HttpServletRequest request){
-        adminService.createUser(createUserRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+    public ResponseEntity<UserDto> createUser(@RequestBody CreateUserRequest createUserRequest, HttpServletRequest request){
+        return ResponseEntity.status(HttpStatus.CREATED).body(adminService.createUser(createUserRequest));
     }
 
     @GetMapping

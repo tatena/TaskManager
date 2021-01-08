@@ -15,6 +15,9 @@ import msda.taskmanager.repository.UserRepository;
 import msda.taskmanager.repository.WorkspaceRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class TaskService {
 
@@ -32,7 +35,7 @@ public class TaskService {
         this.membershipRepository = membershipRepository;
     }
 
-    public void assignTask(TaskAssignment taskDto){
+    public TaskDto assignTask(TaskAssignment taskDto){
         User receiver = userRepository.findById(taskDto.getReceiverID())
                     .orElseThrow(() -> new RuntimeException("No such receiver"));
         User author = userService.getAuthenticatedUser().orElseThrow(() -> new RuntimeException("User not found"));
@@ -50,10 +53,10 @@ public class TaskService {
 
         Task task = TaskMapper.fromDto(taskDto.getDescription(), author, receiver, workspace);
 
-        taskRepository.save(task);
+        return TaskMapper.toDto(taskRepository.save(task));
     }
 
-    public void updateTaskStatus(TaskStatusUpdate taskDto){
+    public TaskDto updateTaskStatus(TaskStatusUpdate taskDto){
         Task task = taskRepository.findById(taskDto.getTaskID())
                 .orElseThrow(() -> new RuntimeException("No such task id present in DB"));
 
@@ -65,9 +68,10 @@ public class TaskService {
         TaskStatus currentStatus = taskDto.getStatus();
         if(!task.getStatus().equals(currentStatus)){
             task.setStatus(currentStatus);
-            taskRepository.save(task);
+            task = taskRepository.save(task);
         }
 
+        return TaskMapper.toDto(task);
     }
 
     public void cancelTask(Long taskID){
@@ -89,5 +93,30 @@ public class TaskService {
             }
         }
         return false;
+    }
+
+    public TaskDto getById(Long id) {
+        Optional<Task> taskOptional = taskRepository.findById(id);
+        Task task = taskOptional.orElseThrow(() -> new RuntimeException("Task not found"));
+
+        return TaskMapper.toDto(task);
+    }
+
+    public List<TaskDto> getAll() {
+        return TaskMapper.toDtoList(taskRepository.findAll());
+    }
+
+    public TaskDto doTask(Long id) {
+        Task task = taskRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("No such task id present in DB"));
+
+        User activeUser = userService.getAuthenticatedUser().orElseThrow(() -> new RuntimeException("User not found"));
+        if(!task.getReceiver().getId().equals(activeUser.getId())){
+            throw new RuntimeException("Only task receiver can do the task");
+        }
+
+        task.setStatus(TaskStatus.DONE);
+
+        return TaskMapper.toDto(taskRepository.save(task));
     }
 }
