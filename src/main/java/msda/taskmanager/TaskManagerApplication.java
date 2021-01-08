@@ -15,6 +15,9 @@ import java.util.TimeZone;
 @EnableJpaRepositories("msda.taskmanager.repository")
 public class TaskManagerApplication {
 
+    /* manually setting service timezone for now */
+    public static final int TIME_ZONE = 4;
+
 //    @PostConstruct
 //    public void init(){
 //        // Setting Spring Boot SetTimeZone

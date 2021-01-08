@@ -8,5 +8,5 @@ public class TaskAssignment {
     private String description;
     private Long receiverID;
     private Long workspaceID;
-
+    private TimezoneDto dates;
 }

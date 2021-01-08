@@ -34,8 +34,11 @@ public class Workspace {
     private WorkspaceStatus status;
 
     @OneToMany(mappedBy = "workspace", fetch = FetchType.LAZY)
-    List<Membership> memberships;
+    private List<Membership> memberships;
 
     @OneToMany(mappedBy = "workspace", fetch = FetchType.LAZY)
-    List<Task> tasks;
+    private List<Task> tasks;
+
+    @Column(name = "TIMEZONE")
+    private Integer timezone;
 }

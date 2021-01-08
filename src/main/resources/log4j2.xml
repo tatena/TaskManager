@@ -43,7 +43,7 @@
     </Appenders>
     <Loggers>
         <Root level="info">
-            <AppenderRef ref="FileLogger"/>
+            <AppenderRef ref="Console"/>
         </Root>
     </Loggers>
 </Configuration>

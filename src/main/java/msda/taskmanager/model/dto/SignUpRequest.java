@@ -2,6 +2,7 @@ package msda.taskmanager.model.dto;
 
 import lombok.Data;
 
+
 @Data
 public class SignUpRequest {
 
@@ -9,5 +10,5 @@ public class SignUpRequest {
     private String password;
     private String firstName;
     private String lastName;
-
+    private Integer timezone;
 }

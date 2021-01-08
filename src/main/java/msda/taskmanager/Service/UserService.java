@@ -29,13 +29,14 @@ public class UserService {
     }
 
     public List<TaskDto> getUserReceivedTasks() {
-        User user = getAuthenticatedUser().orElseThrow(() -> new RuntimeException("User not found"));
-        return TaskMapper.toDtoList(user.getReceivedTasks());
+        User user = getAuthenticatedUser();
+        return TaskMapper.toDtoList(user, user.getReceivedTasks());
     }
 
     public List<TaskDto> getUserCreatedTasks() {
-        User user = getAuthenticatedUser().orElseThrow(() -> new RuntimeException("User not found"));
-        return TaskMapper.toDtoList(user.getCreatedTasks());
+        User user = getAuthenticatedUser();
+        return TaskMapper.toDtoList(user, user.getCreatedTasks());
+
     }
 
     public Optional<User> getAuthenticatedUser() {
