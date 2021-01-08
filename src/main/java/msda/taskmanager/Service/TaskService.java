@@ -16,7 +16,8 @@ import msda.taskmanager.repository.UserRepository;
 import msda.taskmanager.repository.WorkspaceRepository;
 import org.springframework.stereotype.Service;
 
-
+import java.util.List;
+import java.util.Optional;
 import java.time.LocalDateTime;
 
 @Service
@@ -55,7 +56,7 @@ public class TaskService {
         Task task = TaskMapper.fromDto(taskDto.getDescription(), author, receiver, workspace);
         TaskMapper.setServiceDates(author.getTimezone(), workspace.getTimezone(),taskDto.getDates(), task);
 
-        return TaskMapper.toDto(taskRepository.save(task));
+        return TaskMapper.toDto(taskRepository.save(task), author.getTimezone());
     }
 
     public TaskDto updateTaskStatus(TaskStatusUpdate taskDto){
@@ -76,7 +77,7 @@ public class TaskService {
             task = taskRepository.save(task);
         }
 
-        return TaskMapper.toDto(task);
+        return TaskMapper.toDto(task, activeUser.getTimezone());
     }
 
     public void cancelTask(Long taskID){
@@ -103,12 +104,14 @@ public class TaskService {
     public TaskDto getById(Long id) {
         Optional<Task> taskOptional = taskRepository.findById(id);
         Task task = taskOptional.orElseThrow(() -> new RuntimeException("Task not found"));
+        User activeUser = userService.getAuthenticatedUser().orElseThrow(() -> new RuntimeException("No active user"));
 
-        return TaskMapper.toDto(task);
+        return TaskMapper.toDto(task, activeUser.getTimezone());
     }
 
     public List<TaskDto> getAll() {
-        return TaskMapper.toDtoList(taskRepository.findAll());
+        User activeUser = userService.getAuthenticatedUser().orElseThrow(() -> new RuntimeException("No active user"));
+        return TaskMapper.toDtoList(activeUser, taskRepository.findAll());
     }
 
     public TaskDto doTask(Long id) {
@@ -122,6 +125,6 @@ public class TaskService {
 
         task.setStatus(TaskStatus.DONE);
 
-        return TaskMapper.toDto(taskRepository.save(task));
+        return TaskMapper.toDto(taskRepository.save(task), activeUser.getTimezone());
     }
 }
