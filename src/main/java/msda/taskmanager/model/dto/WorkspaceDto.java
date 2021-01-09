@@ -10,4 +10,5 @@ public class WorkspaceDto {
     private String title;
     private String description;
     private WorkspaceStatus status;
+    private Integer timezone;
 }

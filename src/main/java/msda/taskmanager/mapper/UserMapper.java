@@ -18,6 +18,7 @@ public class UserMapper {
         res.setRole(user.getRole());
         res.setId(user.getId());
         res.setDeleted(user.getDeleted());
+        res.setTimezone(user.getTimezone());
 
         return res;
     }

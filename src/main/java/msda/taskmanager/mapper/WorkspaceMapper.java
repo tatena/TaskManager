@@ -17,7 +17,7 @@ public class WorkspaceMapper {
         res.setDescription(workspace.getDescription());
         res.setStatus(workspace.getStatus());
         res.setTitle(workspace.getTitle());
-
+        res.setTimezone(workspace.getTimezone());
         return res;
     }
 

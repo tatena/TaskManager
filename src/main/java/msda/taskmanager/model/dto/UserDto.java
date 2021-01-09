@@ -13,5 +13,6 @@ public class UserDto {
     private String lastName;
     private Role role;
     private Boolean deleted;
+    private Integer timezone;
 
 }
