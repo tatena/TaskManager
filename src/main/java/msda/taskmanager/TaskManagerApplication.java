@@ -16,7 +16,7 @@ import java.util.TimeZone;
 public class TaskManagerApplication {
 
     /* manually setting service timezone for now */
-    public static final int TIME_ZONE = 4;
+    public static final Integer TIME_ZONE = 4;
 
 //    @PostConstruct
 //    public void init(){

@@ -17,7 +17,7 @@ import java.util.List;
 
 public class TaskMapper {
 
-    public static TaskDto toDto(Task task, int userTimezone) {
+    public static TaskDto toDto(Task task, Integer userTimezone) {
         TaskDto res = new TaskDto();
 
         res.setId(task.getId());
@@ -27,7 +27,7 @@ public class TaskMapper {
         res.setDescription(task.getDescription());
         res.setStatus(task.getStatus());
 
-        int workspaceTimezone = task.getWorkspace().getTimezone();
+        Integer workspaceTimezone = task.getWorkspace().getTimezone();
         res.setStartDate(getTaskDates(userTimezone, workspaceTimezone, task.getStartDate()));
         res.setDeadline(getTaskDates(userTimezone, workspaceTimezone, task.getDeadline()));
 
@@ -36,7 +36,7 @@ public class TaskMapper {
 
     public  static List<TaskDto> toDtoList(User user, List<Task> tasks) {
         List<TaskDto> res = new ArrayList<>();
-        int userTimezone = user.getTimezone();
+        Integer userTimezone = user.getTimezone();
 
         for (Task task : tasks) {
             res.add(toDto(task, userTimezone));
@@ -56,7 +56,7 @@ public class TaskMapper {
     }
 
     public static void setServiceDates(Integer userTZ, Integer workspaceTZ, TimezoneDto dates, Task task) {
-        int timezone = TaskManagerApplication.TIME_ZONE;
+        Integer timezone = TaskManagerApplication.TIME_ZONE;
         if(userTZ != null){
             timezone = userTZ.intValue();
         }else if(workspaceTZ != null){
@@ -81,7 +81,7 @@ public class TaskMapper {
      * @return new LocalDateTime instance which can be displayed to the user
      */
     public static LocalDateTime getTaskDates(Integer userTimezone, Integer workspaceTimezone, @NotNull LocalDateTime time){
-        int timezone = TaskManagerApplication.TIME_ZONE;
+        Integer timezone = TaskManagerApplication.TIME_ZONE;
         if(userTimezone != null){
             timezone = userTimezone;
         }else if(workspaceTimezone != null){
