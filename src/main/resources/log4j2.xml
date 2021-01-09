@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+    <Properties>
+        <Property name="NewL">
+            \n\t
+        </Property>
+        <Property name="Date">
+            ${NewL}date: %d{yyyy-MM-dd HH:mm:ss}
+        </Property>
+        <Property name="Level">
+            ${NewL}level: %-5level
+        </Property>
+        <Property name="Class">
+            ${NewL}class: %logger{36}
+        </Property>
+        <Property name="Message">
+            ${NewL}message: %msg%n
+        </Property>
+    </Properties>
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="LogObject{${Date}${Level}${Class}${Message}}\n"/>
+        </Console>
+        <File name="FileLogger" fileName="Logs\\test.log" immediateFlush="true">
+            <PatternLayout pattern="LogObject{${Date}${Level}${Class}${Message}}\n"/>
+        </File>
+    </Appenders>
+    <Loggers>
+        <Root level="info">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="FileLogger"/>
+        </Root>
+    </Loggers>
+</Configuration>
